@@ -1,0 +1,15 @@
+.vs/
+.idea/
+.vscode/
+__pycache__/
+dist/
+build/
+*egg-info/
+*.py[aoc]
+*.spec
+.python-version
+.pytest_cache/
+# Pipenv will load this file on start up :
+.env
+# Remove for deterministic builds :
+*.lock
