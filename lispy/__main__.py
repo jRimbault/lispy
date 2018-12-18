@@ -11,7 +11,7 @@ from .repl import read_eval_print_loop
 
 def main(args):
     if len(sys.argv) < 2 and sys.stdin.isatty():
-        read_eval_print_loop()
+        sys.exit(read_eval_print_loop())
     eval_file(args.file)
 
 
