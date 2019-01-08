@@ -53,6 +53,19 @@ def _defun(expr, env):
     return None
 
 
+def _cond(expr, env):
+    """(cond ((expr)...) (else expr))"""
+    to_eval = expr[-1][1]
+    for e in expr[1:-1]:
+        if evaluate_exp(e[0], env) == True:
+            to_eval = e[1:]
+            if len(e[1:]) == 1:
+                to_eval = e[1]
+            break
+
+    return evaluate_exp(to_eval, env)
+
+
 BUILTINS = {
     "quote": _quote,
     "if": _if,
@@ -60,6 +73,7 @@ BUILTINS = {
     "define": _define,
     "lambda": _lambda,
     "defun": _defun,
+    "cond": _cond,
     "λ": _lambda,
 }
 
@@ -86,7 +100,6 @@ def evaluate_exp(expr: ltypes.Exp, env=GLOBAL_ENV) -> ltypes.Exp:
             args = [evaluate_exp(exp, env) for exp in expr[1:]]
             return proc(*args)
         raise
-
 
 
 class Procedure(object):

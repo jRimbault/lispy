@@ -89,3 +89,18 @@ def test_defun_proc():
         lispeval("(defun addition (x) x)")
     except Exception as err:
         assert type(err) == SyntaxError
+
+
+def test_cond_builtin():
+    expr = """(cond ((= 1 1) 10)
+                    ((= 2 1) (+ 20 1))
+                    (else    30))"""
+    assert lispeval(expr) == 10
+    expr = """(cond ((= 1 2) 10)
+                    ((= 2 2) (+ 20 1))
+                    (else    30))"""
+    assert lispeval(expr) == 21
+    expr = """(cond ((= 1 2) 10)
+                    ((= 2 1) (+ 20 1))
+                    (else    30))"""
+    assert lispeval(expr) == 30
