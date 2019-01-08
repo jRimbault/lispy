@@ -1,15 +1,20 @@
 #!/usr/bin/env lispy
 ; print out the fibonacci sequence
 
-(let fib (lambda (n)
+(defun fib (n)
     (if (< n 2)
         1
-        (+ (fib (- n 1)) (fib (- n 2))))))
+        (+ (fib (- n 1)) (fib (- n 2)))))
 
 
-(let l (cond
-    ((< 1 (length args))
-        (int (car (cdr args))))
-    (else 10)))
+(defun get-length (get-arg args)
+    (if (< 1 (length args))
+        (int (get-arg args))
+        10))
 
-(print (map fib (range l)))
+
+(defun fibonacci (args)
+    (print (map fib (range (get-length (lambda (l) (car (cdr l))) args)))))
+
+
+(fibonacci args)
