@@ -5,6 +5,7 @@ An environment with some Scheme standard procedures.
 import math
 import operator
 import os
+import sys
 
 from . import ltypes
 
@@ -39,6 +40,7 @@ GLOBAL_ENV.update(
         "expt": lambda a, b: a ** b,
         "abs": abs,
         "append": operator.add,
+        "args": sys.argv[1:],
         "modulo": operator.mod,
         "apply": lambda proc, args: proc(*args),
         "do": lambda *x: x[-1],
@@ -54,6 +56,8 @@ GLOBAL_ENV.update(
         "map": lambda *args: list(map(*args)),
         "max": max,
         "min": min,
+        "int": int,
+        "str": str,
         "not": operator.not_,
         "null?": lambda x: x == [],
         "number?": lambda x: isinstance(x, ltypes.Number),

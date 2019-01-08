@@ -18,7 +18,8 @@ def main(args):
 def parse_args(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser()
     parser.add_argument("file", nargs="?")
-    return parser.parse_args(argv)
+    args, _ = parser.parse_known_args(argv)
+    return args
 
 
 def eval_file(filename):
