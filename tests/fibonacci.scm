@@ -1,3 +1,4 @@
+#!/usr/bin/env lispy
 ; print out the fibonacci sequence
 
 (let fib (lambda (n)

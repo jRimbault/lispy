@@ -44,12 +44,22 @@ def _lambda(expr, env):
     return Procedure(params, body, env)
 
 
+def _defun(expr, env):
+    """(defun proc (arg) (exp))"""
+    (_, name_proc, params, body) = expr
+    if name_proc in env:
+        raise SyntaxError(f"Symbol '{name_proc}' is already defined.")
+    env[name_proc] = Procedure(params, body, env)
+    return None
+
+
 BUILTINS = {
     "quote": _quote,
     "if": _if,
     "let": _define,
     "define": _define,
     "lambda": _lambda,
+    "defun": _defun,
     "λ": _lambda,
 }
 
@@ -69,6 +79,14 @@ def evaluate_exp(expr: ltypes.Exp, env=GLOBAL_ENV) -> ltypes.Exp:
         proc = evaluate_exp(expr[0], env)
         args = [evaluate_exp(exp, env) for exp in expr[1:]]
         return proc(*args)
+    except TypeError as error:
+        if "unhashable type: 'list'" in repr(error):
+            # (proc arg...)
+            proc = evaluate_exp(expr[0], env)
+            args = [evaluate_exp(exp, env) for exp in expr[1:]]
+            return proc(*args)
+        raise
+
 
 
 class Procedure(object):

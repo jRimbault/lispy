@@ -23,7 +23,7 @@ def parse_args(argv=sys.argv[1:]):
 
 def eval_file(filename):
     def commented_line(line):
-        if line.startswith(";"):
+        if line.startswith(";") or line.startswith("#!"):
             return False
         if len(line) > 1:
             return True

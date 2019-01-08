@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from lispy import core, parser, main, parse_args
 
-from . import capture
+from . import capture, HERE
 
 
 class InterpreterTester(TestCase):
@@ -31,7 +31,7 @@ class InterpreterTester(TestCase):
 class FileInterpreterTester(TestCase):
     def setUp(self):
         self.args = [
-            "tests/fibonacci.scm"
+            HERE + "/fibonacci.scm"
         ]
         self.res = "[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]"
 

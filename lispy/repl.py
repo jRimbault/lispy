@@ -11,7 +11,7 @@ from .parser import parse
 def read_eval_print_loop():
     repl = LispyRepl()
     try:
-        sys.exit(repl.cmdloop())
+        repl.cmdloop()
     except KeyboardInterrupt:
         print("Bye!")
     return 0
