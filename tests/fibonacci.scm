@@ -5,4 +5,4 @@
     (if (< n 2)
         1
         (+ (fib (- n 1)) (fib (- n 2))))))
-(display (map fib (range 10)))
+(print (map fib (range 10)))
