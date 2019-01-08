@@ -7,7 +7,7 @@
         ((divisible i 5)  (quote Buzz))
         (else             i)))
 
-(map display (map fizzbuzz (range 1 101)))
+(print (map fizzbuzz (range 1 101)))
 
 ; (map (lambda (i)
 ;     (display

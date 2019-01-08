@@ -1,10 +1,9 @@
 """Read Eval Print Loop Module"""
 
 import cmd
-import sys
 
-from .core import BUILTINS, evaluate_exp, scheme_to_str
-from .env import GLOBAL_ENV
+from .core import BUILTINS, evaluate_exp
+from .env import GLOBAL_ENV, scheme_to_str
 from .parser import parse
 
 

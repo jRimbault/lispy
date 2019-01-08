@@ -6,7 +6,15 @@ import math
 import operator
 import os
 
-from .ltypes import Number, Symbol
+from . import ltypes
+
+
+def scheme_to_str(exp):
+    """Convert a Python object back into a Scheme-readable string."""
+    if isinstance(exp, ltypes.List):
+        return "(" + " ".join(map(scheme_to_str, exp)) + ")"
+    return str(exp)
+
 
 # Get all math functions in the global space
 # sin, cos, sqrt, pi, ...
@@ -48,12 +56,12 @@ GLOBAL_ENV.update(
         "min": min,
         "not": operator.not_,
         "null?": lambda x: x == [],
-        "number?": lambda x: isinstance(x, Number),
+        "number?": lambda x: isinstance(x, ltypes.Number),
         "procedure?": callable,
         "round": round,
         "range": range,
-        "symbol?": lambda x: isinstance(x, Symbol),
-        "print": print,
+        "symbol?": lambda x: isinstance(x, ltypes.Symbol),
+        "print": lambda x: print(scheme_to_str(x)),
         "display": print,
         "newline": os.linesep,
     }

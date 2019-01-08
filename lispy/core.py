@@ -9,13 +9,6 @@ from . import ltypes
 from .env import GLOBAL_ENV
 
 
-def scheme_to_str(exp):
-    """Convert a Python object back into a Scheme-readable string."""
-    if isinstance(exp, ltypes.List):
-        return "(" + " ".join(map(scheme_to_str, exp)) + ")"
-    return str(exp)
-
-
 def _quote(expr, env):
     """(quote expr)"""
     (_, exp) = expr
@@ -80,6 +73,12 @@ BUILTINS = {
 
 def evaluate_exp(expr: ltypes.Exp, env=GLOBAL_ENV) -> ltypes.Exp:
     """Evaluate an expression in an environment."""
+    def _eval(expr, env):
+        # (proc arg...)
+        proc = evaluate_exp(expr[0], env)
+        args = [evaluate_exp(exp, env) for exp in expr[1:]]
+        return proc(*args)
+
 
     if isinstance(expr, ltypes.Symbol):  # variable reference
         return env[expr]
@@ -89,17 +88,10 @@ def evaluate_exp(expr: ltypes.Exp, env=GLOBAL_ENV) -> ltypes.Exp:
     try:
         return BUILTINS[expr[0]](expr, env)
     except KeyError:
-        # (proc arg...)
-        proc = evaluate_exp(expr[0], env)
-        args = [evaluate_exp(exp, env) for exp in expr[1:]]
-        return proc(*args)
+        return _eval(expr, env)
     except TypeError as error:
         if "unhashable type: 'list'" in repr(error):
-            # (proc arg...)
-            proc = evaluate_exp(expr[0], env)
-            args = [evaluate_exp(exp, env) for exp in expr[1:]]
-            return proc(*args)
-        raise
+            return _eval(expr, env)
 
 
 class Procedure(object):
@@ -109,11 +101,5 @@ class Procedure(object):
         self.params, self.body, self.env = params, body, env
 
     def __call__(self, *args):
-        try:
-            env = Environment(dict(zip(self.params, args)), self.env)
-            # env = dict(zip(self.params, args))
-            # env.update(self.env)
-            return evaluate_exp(self.body, env)
-        except TypeError as error:
-            print(error)
-            return None
+        env = Environment(dict(zip(self.params, args)), self.env)
+        return evaluate_exp(self.body, env)
