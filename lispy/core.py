@@ -26,7 +26,7 @@ def _if(expr, env):
 def _define(expr, env):
     """(define var exp)"""
     (_, var, exp) = expr
-    if var in env:
+    if var in env or var in BUILTINS:
         raise SyntaxError(f"Symbol '{var}' is already defined.")
     env[var] = evaluate_exp(exp, env)
     return None
@@ -41,7 +41,7 @@ def _lambda(expr, env):
 def _defun(expr, env):
     """(defun proc (arg) (exp))"""
     (_, name_proc, params, body) = expr
-    if name_proc in env:
+    if name_proc in env or name_proc in BUILTINS:
         raise SyntaxError(f"Symbol '{name_proc}' is already defined.")
     env[name_proc] = Procedure(params, body, env)
     return None
@@ -63,7 +63,7 @@ def _cond(expr, env):
 def _loop(expr, env):
     """(loop for x from a to b do (proc))"""
     _, _, var, _, init, _, end, _, proc = expr
-    if var in env:
+    if var in env or var in BUILTINS:
         raise SyntaxError(f"Symbol '{var}' is already defined outside the loop.")
     for i in range(init, end):
         env[var] = i

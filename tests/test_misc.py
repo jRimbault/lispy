@@ -149,3 +149,14 @@ def test_loop2_builtin_exception():
         error_happened = True
         assert type(err) == SyntaxError
     assert error_happened == True
+
+
+def test_forbid_redefinition_of_builtins():
+    expr = "(let if 1)"
+    error_happened = False
+    try:
+        lispeval(expr)
+    except Exception as err:
+        error_happened = True
+        assert type(err) == SyntaxError
+    assert error_happened == True
