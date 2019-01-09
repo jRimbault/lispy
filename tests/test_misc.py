@@ -1,5 +1,7 @@
 from lispy import core, parser
 
+from . import capture
+
 
 def lispeval(expr):
     return core.evaluate_exp(parser.parse(expr))
@@ -20,12 +22,26 @@ def test_multiplication():
     assert 0 < lispeval(expr) - 6.72 < 0.00001
 
 
-def test_type_error():
-    expr = "(+ 1 (quote word))"
+def test_parser_syntax():
+    expr = ")(let a 1)"
+    error_happened = False
     try:
         lispeval(expr)
     except Exception as err:
+        error_happened = True
+        assert type(err) == SyntaxError
+    assert error_happened == True
+
+
+def test_type_error():
+    expr = "(+ 1 (quote word))"
+    error_happened = False
+    try:
+        lispeval(expr)
+    except Exception as err:
+        error_happened = True
         assert type(err) == TypeError
+    assert error_happened == True
 
 
 def test_procedure_definition():
@@ -75,32 +91,61 @@ def test_conditional_if():
 def test_scopes_do_not_overlap():
     lispeval("(let var 10)")
     lispeval("(let identity (lambda (var) var))")
+    error_happened = False
     try:
         lispeval("(let var 11)")
     except Exception as err:
+        error_happened = True
         assert type(err) == SyntaxError
+    assert error_happened == True
     assert lispeval("(identity 2)") == 2
 
 
 def test_defun_proc():
     lispeval("(defun addition (x y) (+ x y))")
     assert lispeval("(addition 2 3)") == 5
+    error_happened = False
     try:
         lispeval("(defun addition (x) x)")
     except Exception as err:
+        error_happened = True
         assert type(err) == SyntaxError
+    assert error_happened == True
 
 
-def test_cond_builtin():
+def test_cond1_builtin():
     expr = """(cond ((= 1 1) 10)
                     ((= 2 1) (+ 20 1))
                     (else    30))"""
     assert lispeval(expr) == 10
+
+
+def test_cond2_builtin():
     expr = """(cond ((= 1 2) 10)
                     ((= 2 2) (+ 20 1))
                     (else    30))"""
     assert lispeval(expr) == 21
+
+
+def test_cond3_builtin():
     expr = """(cond ((= 1 2) 10)
                     ((= 2 1) (+ 20 1))
                     (else    30))"""
     assert lispeval(expr) == 30
+
+
+def test_loop1_builtin():
+    expr = "(loop for i from 0 to 10 do (print i))"
+    with capture(lispeval, expr) as out:
+        assert out.strip() == "\n".join(map(str, range(0, 10)))
+
+
+def test_loop2_builtin_exception():
+    lispeval("(let i 0)")
+    error_happened = False
+    try:
+        lispeval("(loop for i from 0 to 10 do (print i))")
+    except Exception as err:
+        error_happened = True
+        assert type(err) == SyntaxError
+    assert error_happened == True

@@ -4,6 +4,7 @@ Interpreter main methods
 """
 
 from collections import ChainMap as Environment
+from functools import partial
 
 from . import ltypes
 from .env import GLOBAL_ENV
@@ -59,6 +60,17 @@ def _cond(expr, env):
     return evaluate_exp(to_eval, env)
 
 
+def _loop(expr, env):
+    """(loop for x from a to b do (proc))"""
+    _, _, var, _, init, _, end, _, proc = expr
+    if var in env:
+        raise SyntaxError(f"Symbol '{var}' is already defined outside the loop.")
+    for i in range(init, end):
+        env[var] = i
+        evaluate_exp(proc, env)
+    del env[var]
+
+
 BUILTINS = {
     "quote": _quote,
     "if": _if,
@@ -67,18 +79,19 @@ BUILTINS = {
     "lambda": _lambda,
     "defun": _defun,
     "cond": _cond,
+    "loop": _loop,
     "λ": _lambda,
 }
 
 
 def evaluate_exp(expr: ltypes.Exp, env=GLOBAL_ENV) -> ltypes.Exp:
     """Evaluate an expression in an environment."""
+
     def _eval(expr, env):
         # (proc arg...)
         proc = evaluate_exp(expr[0], env)
         args = [evaluate_exp(exp, env) for exp in expr[1:]]
         return proc(*args)
-
 
     if isinstance(expr, ltypes.Symbol):  # variable reference
         return env[expr]

@@ -17,7 +17,7 @@ def read_eval_print_loop():
 
 
 class LispyRepl(cmd.Cmd):
-    intro = "Welcome to the lispy interpreter"
+    intro = "Welcome to the lispy interpreter (tab completion enabled)"
     prompt = "(lispy) > "
     autocomplete = list(GLOBAL_ENV.keys()) + list(BUILTINS.keys())
     file = None
