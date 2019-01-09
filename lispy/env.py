@@ -2,6 +2,7 @@
 
 An environment with some Scheme standard procedures.
 """
+import functools
 import math
 import operator
 import os
@@ -15,6 +16,10 @@ def scheme_to_str(exp):
     if isinstance(exp, ltypes.List):
         return "(" + " ".join(map(scheme_to_str, exp)) + ")"
     return str(exp)
+
+
+def compose_functions(f, g):
+    return lambda x: f(g(x))
 
 
 # Get all math functions in the global space
@@ -68,5 +73,6 @@ GLOBAL_ENV.update(
         "print": lambda x: print(scheme_to_str(x)),
         "display": print,
         "newline": os.linesep,
+        "compose": compose_functions
     }
 )

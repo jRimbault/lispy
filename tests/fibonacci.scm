@@ -14,7 +14,7 @@
 
 
 (defun fibonacci (args)
-    (print (map fib (range (get-length (lambda (l) (car (cdr l))) args)))))
+    (print (map fib (range (get-length (compose car cdr) args)))))
 
 
 (fibonacci args)
