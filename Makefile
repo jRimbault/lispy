@@ -8,7 +8,7 @@ init: pipenv
 
 .PHONY: freeze
 freeze: init
-	pipenv run pyinstaller bin/lispy -n lispy --onefile
+	pipenv run pyinstaller bin/lispybin.py -n lispy --onefile
 
 .PHONY: pipenv
 pipenv:
