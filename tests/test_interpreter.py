@@ -8,7 +8,25 @@ from . import capture, HERE
 class InterpreterTester(TestCase):
     def setUp(self):
         self.program = "(begin (define r 10) (* pi (* r r)))"
-        self.tokens = ["(", "begin", "(", "define", "r", "10", ")", "(", "*", "pi", "(", "*", "r", "r", ")", ")", ")"]
+        self.tokens = [
+            "(",
+            "begin",
+            "(",
+            "define",
+            "r",
+            "10",
+            ")",
+            "(",
+            "*",
+            "pi",
+            "(",
+            "*",
+            "r",
+            "r",
+            ")",
+            ")",
+            ")",
+        ]
         self.lisp = ["begin", ["define", "r", 10], ["*", "pi", ["*", "r", "r"]]]
         self.res = 314.1592653589793
 
@@ -30,9 +48,7 @@ class InterpreterTester(TestCase):
 
 class FileInterpreterTester(TestCase):
     def setUp(self):
-        self.args = [
-            HERE + "/fibonacci.scm"
-        ]
+        self.args = [HERE + "/fibonacci.scm"]
         self.res = "(1 1 2 3 5 8 13 21 34 55)"
 
     def tearDown(self):

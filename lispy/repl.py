@@ -8,6 +8,7 @@ from .parser import parse
 
 
 def read_eval_print_loop():
+    """Starts the repl"""
     repl = LispyRepl()
     try:
         repl.cmdloop()
@@ -17,12 +18,15 @@ def read_eval_print_loop():
 
 
 class LispyRepl(cmd.Cmd):
+    """Implements the cmd.Cmd std module to provide a repl"""
+
     intro = "Welcome to the lispy interpreter (tab completion enabled)"
     prompt = "(lispy) > "
     autocomplete = list(GLOBAL_ENV.keys()) + list(BUILTINS.keys())
     file = None
 
     def default(self, line):
+        """Default method to implement"""
         if self.eof(line):
             return True
         self.interpreter(line)
@@ -46,4 +50,5 @@ class LispyRepl(cmd.Cmd):
         return False
 
     def completedefault(self, text, *_):
+        """Tab autocomplete feature"""
         return [i for i in self.autocomplete if i.startswith(text)]

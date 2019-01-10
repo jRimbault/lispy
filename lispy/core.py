@@ -4,13 +4,12 @@ Interpreter main methods
 """
 
 from collections import ChainMap as Environment
-from functools import partial
 
 from . import ltypes
 from .env import GLOBAL_ENV
 
 
-def _quote(expr, env):
+def _quote(expr, *_):
     """(quote expr)"""
     (_, exp) = expr
     return exp
@@ -29,7 +28,6 @@ def _define(expr, env):
     if var in env or var in BUILTINS:
         raise SyntaxError(f"Symbol '{var}' is already defined.")
     env[var] = evaluate_exp(exp, env)
-    return None
 
 
 def _lambda(expr, env):
@@ -44,17 +42,16 @@ def _defun(expr, env):
     if name_proc in env or name_proc in BUILTINS:
         raise SyntaxError(f"Symbol '{name_proc}' is already defined.")
     env[name_proc] = Procedure(params, body, env)
-    return None
 
 
 def _cond(expr, env):
     """(cond ((expr)...) (else expr))"""
     to_eval = expr[-1][1]
-    for e in expr[1:-1]:
-        if evaluate_exp(e[0], env) == True:
-            to_eval = e[1:]
-            if len(e[1:]) == 1:
-                to_eval = e[1]
+    for exp in expr[1:-1]:
+        if evaluate_exp(exp[0], env) is True:
+            to_eval = exp[1:]
+            if len(exp[1:]) == 1:
+                to_eval = exp[1]
             break
 
     return evaluate_exp(to_eval, env)
@@ -120,7 +117,7 @@ def evaluate_exp(expr: ltypes.Exp, env=GLOBAL_ENV) -> ltypes.Exp:
             return _eval(expr, env)
 
 
-class Procedure(object):
+class Procedure:
     """A user-defined Scheme procedure."""
 
     def __init__(self, params, body, env):

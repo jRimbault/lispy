@@ -10,12 +10,14 @@ from .repl import read_eval_print_loop
 
 
 def main(args):
+    """Main entry point for the interpreter"""
     if len(sys.argv) < 2 and sys.stdin.isatty():
         sys.exit(read_eval_print_loop())
     eval_file(args.file)
 
 
 def parse_args(argv=sys.argv[1:]):
+    """Define known options"""
     parser = argparse.ArgumentParser()
     parser.add_argument("file", nargs="?")
     args, _ = parser.parse_known_args(argv)
@@ -23,6 +25,8 @@ def parse_args(argv=sys.argv[1:]):
 
 
 def eval_file(filename):
+    """Helper method to interpret a file"""
+
     def commented_line(line):
         if line.startswith(";") or line.startswith("#!"):
             return False

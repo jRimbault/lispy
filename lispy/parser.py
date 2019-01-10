@@ -27,7 +27,8 @@ def read_from_tokens(tokenized_source: list) -> ltypes.Exp:
             tokens.append(read_from_tokens(tokenized_source))
         tokenized_source.pop(0)  # pop off ')'
         return tokens
-    elif token == ")":
+
+    if token == ")":
         raise SyntaxError("unexpected )")
-    else:
-        return ltypes.atom(token)
+
+    return ltypes.atom(token)

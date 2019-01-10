@@ -2,7 +2,6 @@
 
 An environment with some Scheme standard procedures.
 """
-import functools
 import math
 import operator
 import os
