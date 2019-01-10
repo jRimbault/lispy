@@ -7,10 +7,16 @@
         (+ (fib (- n 1)) (fib (- n 2)))))
 
 
+(let default 10)
+
+
+(defun try-get-int (x) (try (int x) default))
+
+
 (defun get-length (get-arg args)
     (if (< 1 (length args))
-        (int (get-arg args))
-        10))
+        (try-get-int (get-arg args))
+        default))
 
 
 (defun fibonacci (args)

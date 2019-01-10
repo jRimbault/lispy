@@ -160,3 +160,9 @@ def test_forbid_redefinition_of_builtins():
         error_happened = True
         assert type(err) == SyntaxError
     assert error_happened == True
+
+
+def test_exception_handling():
+    lispeval("(let a-list (list 1))")
+    error = lispeval("(try (car (cdr a-list)) error)")
+    assert type(error) == IndexError

@@ -71,6 +71,18 @@ def _loop(expr, env):
     del env[var]
 
 
+def _try(expr, env):
+    """(try (expr) (catch_expr))"""
+    _, expr, catch_expr = expr
+    try:
+        return evaluate_exp(expr, env)
+    except Exception as err:
+        env["error"] = err
+        val = evaluate_exp(catch_expr, env)
+        del env["error"]
+        return val
+
+
 BUILTINS = {
     "quote": _quote,
     "if": _if,
@@ -81,6 +93,7 @@ BUILTINS = {
     "cond": _cond,
     "loop": _loop,
     "λ": _lambda,
+    "try": _try,
 }
 
 

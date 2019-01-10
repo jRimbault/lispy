@@ -18,18 +18,11 @@ def scheme_to_str(exp):
     return str(exp)
 
 
-def compose_functions(f, g):
-    return lambda x: f(g(x))
-
-
 # Get all math functions in the global space
 # sin, cos, sqrt, pi, ...
-GLOBAL_ENV = vars(math)
-GLOBAL_ENV.pop("__doc__", None)
-GLOBAL_ENV.pop("__loader__", None)
-GLOBAL_ENV.pop("__name__", None)
-GLOBAL_ENV.pop("__package__", None)
-GLOBAL_ENV.pop("__spec__", None)
+GLOBAL_ENV = {
+    key: function for key, function in vars(math).items() if not key.startswith("__")
+}
 GLOBAL_ENV.update(
     {
         "+": operator.add,
@@ -73,6 +66,7 @@ GLOBAL_ENV.update(
         "print": lambda x: print(scheme_to_str(x)),
         "display": print,
         "newline": os.linesep,
-        "compose": compose_functions
+        "compose": lambda f, g: lambda x: f(g(x)),
+        "type": type,
     }
 )
