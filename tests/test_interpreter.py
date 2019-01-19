@@ -48,7 +48,7 @@ class InterpreterTester(TestCase):
 
 class FileInterpreterTester(TestCase):
     def setUp(self):
-        self.args = [HERE + "/fibonacci.scm"]
+        self.args = [HERE + "/fibonacci.cl"]
         self.res = "(1 1 2 3 5 8 13 21 34 55)"
 
     def tearDown(self):

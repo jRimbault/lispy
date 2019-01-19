@@ -9,7 +9,7 @@ Welcome to the lispy interpreter
 (lispy) > (map (lambda x (+ x 1)) tenner)
 (1 2 3 4 5 6 7 8 9 10)
 (lispy) >
-$ ./bin/lispy tests/fibonacci.scm 10
+$ ./bin/lispy tests/fibonacci.cl 10
 (1 1 2 3 5 8 13 21 34 55)
 ```
 
