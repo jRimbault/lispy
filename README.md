@@ -2,4 +2,4 @@
 
 Depends on Python 3.6
 
-![shell session](shell.png)
+[![shell session](shell.png)](https://asciinema.org/a/pUfmiTMGf6dQbXzSKS7aoRhFr)
