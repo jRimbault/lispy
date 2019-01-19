@@ -21,7 +21,9 @@
 
 (defun fibonacci (args) ; main
     (do (let arg1 (compose car cdr))
-        (print (map fib (range (get-length arg1 args))))))
+        (let len (get-length arg1 args))
+        (let sequence (map fib (range len)))
+        (print sequence)))
 
 
 (fibonacci args)
