@@ -67,5 +67,7 @@ GLOBAL_ENV.update(
         "newline": os.linesep,
         "compose": lambda f, g: lambda x: f(g(x)),
         "type": type,
+        "true": True,
+        "false": False,
     }
 )
