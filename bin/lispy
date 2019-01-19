@@ -3,7 +3,4 @@
 
 bin_dir="$(dirname "$(readlink -e "$0")")"
 
-PYTHONPATH="$(dirname "$bin_dir")"
-export PYTHONPATH
-
-python3 "$bin_dir/lispybin.py" $*
+PYTHONPATH="$(dirname "$bin_dir")" python3 "$bin_dir/lispybin.py" $*
