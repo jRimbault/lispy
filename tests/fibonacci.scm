@@ -13,14 +13,15 @@
 (defun try-get-int (x) (try (int x) default))
 
 
-(defun get-length (get-arg args)
+(defun get-length (get-arg args) ; gets the length of the sequence to print
     (if (< 1 (length args))
         (try-get-int (get-arg args))
         default))
 
 
-(defun fibonacci (args)
-    (print (map fib (range (get-length (compose car cdr) args)))))
+(defun fibonacci (args) ; main
+    (do (let arg1 (compose car cdr))
+        (print (map fib (range (get-length arg1 args))))))
 
 
 (fibonacci args)

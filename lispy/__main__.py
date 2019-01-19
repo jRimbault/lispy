@@ -28,14 +28,14 @@ def eval_file(filename):
     """Helper method to interpret a file"""
 
     def commented_line(line):
-        if line.startswith(";") or line.startswith("#!"):
-            return False
-        if len(line) > 1:
-            return True
-        return False
+        if ";" in line:
+            return line[0 : line.index(";")]
+        if "#" in line:
+            return line[0 : line.index("#")]
+        return line
 
     with io.open(filename) as stream:
-        program = "".join(filter(commented_line, stream))
+        program = "".join(map(commented_line, stream))
     evaluate_exp(parse(f"(begin {program})"))
 
 
