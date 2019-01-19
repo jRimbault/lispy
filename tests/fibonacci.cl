@@ -10,7 +10,11 @@
 (let default 10)
 
 
-(defun try-get-int (x) (try (int x) default))
+(defun try-get-int (x)
+    (try
+        (int x)
+        (do (print error)
+            default)))
 
 
 (defun get-length (get-arg args) ; gets the length of the sequence to print
