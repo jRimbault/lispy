@@ -63,6 +63,7 @@ GLOBAL_ENV.update(
         "range": range,
         "symbol?": lambda x: isinstance(x, ltypes.Symbol),
         "print": lambda x: print(scheme_to_str(x)),
+        "eprint": lambda x: print(scheme_to_str(x), file=sys.stderr),
         "display": print,
         "newline": os.linesep,
         "compose": lambda f, g: lambda x: f(g(x)),

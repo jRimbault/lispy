@@ -6,7 +6,7 @@
 (defun try-get-int (x)
     (try
         (int x)
-        (do (print error)
+        (do (eprint error)
             default)))
 
 (defun get-length (get-arg args) ; gets the length of the sequence to print
