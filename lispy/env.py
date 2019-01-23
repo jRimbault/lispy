@@ -2,6 +2,7 @@
 
 An environment with some Scheme standard procedures.
 """
+import functools
 import math
 import operator
 import os
@@ -58,6 +59,7 @@ GLOBAL_ENV.update(
         "not": operator.not_,
         "null?": lambda x: x == [],
         "number?": lambda x: isinstance(x, ltypes.Number),
+        "memoize": lambda f: functools.lru_cache(maxsize=128)(f),
         "procedure?": callable,
         "round": round,
         "range": range,

@@ -16,10 +16,10 @@
 
 (defun fibonacci (args) ; main
     (do
-        (defun fib (n)
+        (let fib (memoize (lambda (n)
             (if (< n 2)
                 1
-                (+ (fib (- n 1)) (fib (- n 2)))))
+                (+ (fib (- n 1)) (fib (- n 2)))))))
         (let arg1 (compose car cdr))
         (let len (get-length arg1 args))
         (let sequence (map fib (range len)))
