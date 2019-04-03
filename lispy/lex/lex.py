@@ -1,12 +1,8 @@
-
 from rply import LexerGenerator
 
 
 lg = LexerGenerator()
 
-
-# A regexp for something that should end a quoting/unquoting operator
-# i.e. a space or a closing brace/paren/curly
 end_quote = r"(?![\s\)\]\}])"
 
 identifier = r'[^()\[\]{}\'"\s;]+'
@@ -27,36 +23,16 @@ lg.add("HASHSTARS", r"#\*+")
 lg.add(
     "BRACKETSTRING",
     r"""(?x)
-    \# \[ ( [^\[\]]* ) \[    # Opening delimiter
-    \n?                      # A single leading newline will be ignored
-    ((?:\n|.)*?)             # Content of the string
-    \] \1 \]                 # Closing delimiter
+    \# \[ ( [^\[\]]* ) \[
+    \n?
+    ((?:\n|.)*?)
+    \] \1 \]
     """,
 )
 lg.add("HASHOTHER", r"#%s" % identifier)
-
-# A regexp which matches incomplete strings, used to support
-# multi-line strings in the interpreter
-partial_string = r"""(?x)
-    (?:u|r|ur|ru|b|br|rb|f|fr|rf)? # prefix
-    "  # start string
-    (?:
-       | [^"\\]             # non-quote or backslash
-       | \\(.|\n)           # or escaped single character or newline
-       | \\x[0-9a-fA-F]{2}  # or escaped raw character
-       | \\u[0-9a-fA-F]{4}  # or unicode escape
-       | \\U[0-9a-fA-F]{8}  # or long unicode escape
-    )* # one or more times
-"""
-
-lg.add("STRING", r'%s"' % partial_string)
-lg.add("PARTIAL_STRING", partial_string)
-
 lg.add("IDENTIFIER", identifier)
-
 
 lg.ignore(r";.*(?=\r|\n|$)")
 lg.ignore(r"\s+")
-
 
 lexer = lg.build()

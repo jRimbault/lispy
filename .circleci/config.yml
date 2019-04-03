@@ -1,0 +1,21 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/lispy
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run:
+          command: |  # use pipenv to install dependencies
+            pip install --user pipenv
+            pipenv install --dev
+      - save_cache:
+          key: deps-{{ checksum "Pipfile" }}
+          paths:
+            - ".venv"
+      - run:
+          command: |
+            pipenv run pytest
+      - store_test_results:
+          path: test-results
