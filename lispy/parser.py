@@ -7,6 +7,7 @@ import io
 import re
 
 from . import ltypes
+from .lex import lexer
 
 
 def parse(source: str) -> ltypes.Exp:
@@ -16,7 +17,7 @@ def parse(source: str) -> ltypes.Exp:
 
 def tokenize(source: str) -> list:
     """Convert a string of characters into a list of tokens."""
-    return list(Tokenizer(io.StringIO(source)).get_tokens())
+    return [token.value for token in lexer.lex(source)]
 
 
 def read_from_tokens(tokenized_source: list) -> ltypes.Exp:
@@ -35,28 +36,3 @@ def read_from_tokens(tokenized_source: list) -> ltypes.Exp:
         raise SyntaxError("unexpected )")
 
     return ltypes.atom(token)
-
-
-class Tokenizer:
-    tokenizer = r"""\s*(,@|[('`,)]|"(?:[\\].|[^\\"])*"|;.*|[^\s('"`,;)]*)(.*)"""
-
-    def __init__(self, file):
-        self.file = file
-        self.line = ""
-
-    def next_token(self):
-        while True:
-            if self.line == "":
-                self.line = self.file.readline()
-            if self.line == "":
-                return None
-            token, self.line = re.match(Tokenizer.tokenizer, self.line).groups()
-            if token != "" and not token.startswith(";"):
-                return token
-
-    def get_tokens(self):
-        while True:
-            token = self.next_token()
-            if token is None:
-                break
-            yield token
