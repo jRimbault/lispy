@@ -11,10 +11,11 @@ from .lex import lexer
 from .graph import printTreeGraph
 
 
-def parse(source: str) -> ltypes.Exp:
+def parse(source: str, args) -> ltypes.Exp:
     """Read lisp from a string."""
     exps = read_from_tokens(tokenize(source))
-    printTreeGraph(exps)
+    if args.render is not None:
+        printTreeGraph(exps, args)
     return exps
 
 

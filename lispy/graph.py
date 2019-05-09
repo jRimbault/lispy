@@ -7,11 +7,11 @@ import uuid
 import graphviz
 
 
-def printTreeGraph(t):
+def printTreeGraph(t, args):
     graph = graphviz.Digraph(format='png')
     graph.attr('node')
     addNode(graph, t)
-    graph.render(filename='render') #Pour Sauvegarder
+    graph.render(filename=args.render) #Pour Sauvegarder
     #graph.view() #Pour afficher
 
 
