@@ -8,11 +8,14 @@ import re
 
 from . import ltypes
 from .lex import lexer
+from .graph import printTreeGraph
 
 
 def parse(source: str) -> ltypes.Exp:
     """Read lisp from a string."""
-    return read_from_tokens(tokenize(source))
+    exps = read_from_tokens(tokenize(source))
+    printTreeGraph(exps)
+    return exps
 
 
 def tokenize(source: str) -> list:
