@@ -1,7 +1,6 @@
 """Should you want to run this as a module"""
 
 import argparse
-import io
 import sys
 
 from .core import evaluate_exp
@@ -26,16 +25,10 @@ def parse_args(argv=sys.argv[1:]):
 
 def eval_file(filename):
     """Helper method to interpret a file"""
-
-    def commented_line(line):
-        if ";" in line:
-            return line[0 : line.index(";")]
-        if "#" in line:
-            return line[0 : line.index("#")]
-        return line
-
-    with io.open(filename) as stream:
-        program = "".join(map(commented_line, stream))
+    with open(filename) as stream:
+        program = stream.read()
+    if program[0] == '#':  # handle shebang
+        program = '\n'.join(program.split('\n')[1:])
     evaluate_exp(parse(f"(begin {program})"))
 
 
