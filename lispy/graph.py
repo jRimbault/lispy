@@ -9,7 +9,7 @@ import graphviz
 
 def printTreeGraph(t):
     graph = graphviz.Digraph(format='png')
-    graph.attr('node', shape='doublecircle', color='magenta')
+    graph.attr('node')
     addNode(graph, t)
     graph.render(filename='render') #Pour Sauvegarder
     #graph.view() #Pour afficher
