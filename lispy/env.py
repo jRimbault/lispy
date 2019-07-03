@@ -18,6 +18,10 @@ def scheme_to_str(exp):
     return str(exp)
 
 
+def _slice(iterable, start=None, end=None, step=None):
+    return iterable[start:end:step]
+
+
 # Get all math functions in the global space
 # sin, cos, sqrt, pi, ...
 GLOBAL_ENV = {
@@ -64,6 +68,7 @@ GLOBAL_ENV.update(
         "round": round,
         "range": range,
         "symbol?": lambda x: isinstance(x, ltypes.Symbol),
+        "slice": _slice,
         "print": lambda x: print(scheme_to_str(x)),
         "eprint": lambda x: print(scheme_to_str(x), file=sys.stderr),
         "display": print,
